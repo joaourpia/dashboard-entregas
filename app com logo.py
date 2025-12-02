@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import base64 # Adicionado para lidar com a imagem do logo
 
 st.set_page_config(page_title="Dashboard Operacional", layout="wide")
 
@@ -66,35 +65,31 @@ div[data-testid="stHorizontalBlock"] > div {margin-bottom: -8px;}
 </style>
 """, unsafe_allow_html=True)
 
-# Função para carregar a imagem e codificá-la em base64
+# ------------ Cabeçalho do Dashboard --------------
+import base64
+
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# Tenta carregar o logo, se não encontrar, define como vazio
 try:
     logo_base64 = get_base64_image("images/Logo_Parceria.png")
     logo_html = f'<img src="data:image/png;base64,{logo_base64}" style="max-width:300px;margin-bottom:10px;">'
-except FileNotFoundError: # Alterado para capturar especificamente FileNotFoundError
-    logo_html = ""
-except Exception as e: # Captura outras exceções e imprime para depuração
-    st.error(f"Erro ao carregar o logo: {e}")
+except:
     logo_html = ""
 
-# ------------ Cabeçalho do Dashboard --------------
-# O bloco do logo foi inserido antes do cabeçalho principal
 st.markdown(f"""
 <div style="text-align:center;margin-top:-60px;margin-bottom:5px;">
     {logo_html}
 </div>
 <div class="dashboard-header">
   <div class="header-left">
-    <h1>Dashboard novembro 2025</h1>
+    <h1>Dashboard Semanal Outubro 2025</h1>
     <p>Relatório de Contratação de Temporários - Mendes RH</p>
   </div>
   <div class="header-right">
     <p class="periodo-label">Período</p>
-    <p class="periodo-value">novembro/2025</p>
+    <p class="periodo-value">Semana 21/10 a 27/10</p>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -139,7 +134,7 @@ if st.session_state.current_tab == "Visão Geral":
     col_pie, col_bar = st.columns(2, gap="medium")
     with col_pie:
         st.markdown('<div class="graph-container">', unsafe_allow_html=True)
-        st.markdown('<div class="graph-title">Desempenho SLA - novembro</div>', unsafe_allow_html=True)
+        st.markdown('<div class="graph-title">Desempenho SLA - 21/10 a 27/10</div>', unsafe_allow_html=True)
         st.markdown('<div class="graph-content">', unsafe_allow_html=True)
 
         no_prazo = sla["No_prazo"].iloc[0]
@@ -182,7 +177,7 @@ if st.session_state.current_tab == "Visão Geral":
 
     with col_bar:
         st.markdown('<div class="graph-container">', unsafe_allow_html=True)
-        st.markdown('<div class="graph-title">Diárias - novembro</div>', unsafe_allow_html=True)
+        st.markdown('<div class="graph-title">Diárias - 21/10 a 27/10</div>', unsafe_allow_html=True)
         st.markdown('<div class="graph-content">', unsafe_allow_html=True)
         solicitadas = pedidos.Solicitado.iloc[0]
         entregues = pedidos.Entregue.iloc[0]
@@ -226,9 +221,9 @@ if st.session_state.current_tab == "Visão Geral":
 
     st.markdown("""
     <div class="obs-box">
-    <b>Observações Importantes - novembro</b>
+    <b>Observações Importantes - 21/10 a 27/10</b>
     <ul>
-      <li><b>SLA:</b> SLA: Excelente performance da SLA de 99,6% em novembro/2025, e performance de diárias 18% acima do solicitado, mesmo em um periodo de alta demanda na cidade de Caldas. Adotamos a estratégia de pagamento por assiduidade e pagamentos facilitados, sendo feitos semanalmente.</li>
+      <li><b>SLA:</b> Excelente performance  da SLA de 100% entre 21 a 27/10, e performance de diárias 36% acima do solicitado, impulsionadas pela manutenção da diária em R$ 80,00 e pela premiação de assiduidade (par de ingressos e gratificação de R$ 80,00).</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -297,8 +292,9 @@ elif st.session_state.current_tab == "Análise SLA":
     # Bloco azul - Contexto Evento VO
     st.markdown("""
     <div class="obs-box" style="background:#e8f1fd;border-left:5px solid #5aa7db;color:#164976;font-size:1.04em;margin-top:10px;font-weight:500;">
-    <b>Performance de 99,6% no mês de novembro/2025, onde tivemos 283 solicitações e entregamos 282.</b><br>
-    </div>
+    <b>Contexto SLA</b><br>
+    <li><b>Entregas:</b> Performance de 100% entre 21 a 27/10/2025, onde recebemos 21 solicitações e entregamos as 21.</li> <br>
+    
     """, unsafe_allow_html=True)
 
 # =========== DIÁRIAS ============
@@ -330,7 +326,7 @@ elif st.session_state.current_tab == "Diárias":
     # Gráfico de barras
     fig_barras = go.Figure()
     fig_barras.add_trace(go.Bar(
-        x=["novembro"],
+        x=["21/10 a 27/10"],
         y=[solicitadas],
         name="Solicitadas",
         marker=dict(color="#FFA500"),
@@ -338,7 +334,7 @@ elif st.session_state.current_tab == "Diárias":
         textposition="outside"
     ))
     fig_barras.add_trace(go.Bar(
-        x=["novembro"],
+        x=["14/10 a 21/10"],
         y=[entregues],
         name="Entregues",
         marker=dict(color="#23B26D"),
@@ -361,7 +357,7 @@ elif st.session_state.current_tab == "Diárias":
     st.markdown(f"""
     <div class="diarias-card-sucesso">
       <b>Desempenho Excepcional</b><br>
-      Em novembro, superamos as expectativas ao entregar <b>{entregues} diárias</b>, quando foram solicitadas <b>{solicitadas}</b>, resultando em uma diferença positiva de <b style="color:#12bb26;">+{saldo} diárias</b>.<br>
+      Em setembro, superamos as expectativas ao entregar <b>{entregues} diárias</b>, quando foram solicitadas <b>{solicitadas}</b>, resultando em uma diferença positiva de <b style="color:#12bb26;">+{saldo} diárias</b>.<br>
       Taxa de atendimento: <b>{taxa:.2f}%</b>.
     </div>
     """, unsafe_allow_html=True)
@@ -371,9 +367,9 @@ elif st.session_state.current_tab == "Diárias":
     <div class="diarias-motivos">
       <div class="diarias-motivos-title">Motivos para Diárias Acima do Solicitado</div>
       <ol style="margin-top:0.1em;margin-bottom:0.1em;">
-        <li>Entregamos 195 diarias acima do solicitado, onde essa diferença doi composta de entregas acima nos feriados para evitar desfalcar os setores com as faltas e STHs vencidas que foram abertas depois do prazo.</li>
         <li>Algumas STHs estavam vencidas, mas os temporários continuaram trabalhando.</li>
-        </ol>
+        <li>A decisão de entregar temporários acima do solicitado, foi um diferencial para mantermos as entregas diárias em mais de 100%, mesmo com algumas faltas e desistências.</li>
+      </ol>
     </div>
     """, unsafe_allow_html=True)
 
@@ -389,7 +385,7 @@ if st.session_state.current_tab == "Histórico":
 
     st.markdown("""
 <div style="background:#fff;border-radius:16px;padding:28px 35px 26px 35px;margin-bottom:28px;box-shadow:0 1px 8px #0001;">
-    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Prazos de Entregas (Março - novembro)</div>
+    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Prazos de Entregas (01/10 a 27/10)</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -426,6 +422,7 @@ if st.session_state.current_tab == "Histórico":
     )
     st.plotly_chart(fig1, use_container_width=True, config={'displayModeBar': False})
 
+    
     # ----------- Histórico de Diárias Entregues -----------
     ent_hist = pd.read_csv('dados/HISTORICO_ENTREGA.csv', sep=';', encoding='latin1')
     ent_hist.columns = ['Mês', 'Solicitadas', 'Entregues', 'Taxa']
@@ -436,7 +433,7 @@ if st.session_state.current_tab == "Histórico":
 
     st.markdown("""
 <div style="background:#fff;border-radius:16px;padding:28px 35px 26px 35px;margin-bottom:28px;box-shadow:0 1px 8px #0001;">
-    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Diárias Entregues (Janeiro - novembro)</div>
+    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Diárias Entregues (01/10 a 27/10)</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -498,8 +495,10 @@ if st.session_state.current_tab == "Histórico":
                 <span style="font-size:1.08em;">&#8593; Pontos Positivos</span>
             </div>
             <ul style="font-size:1em;margin-left:6px;margin-bottom:0;">
-                <li>Performance consistentemente de diárias entregues acima de 100% do objetivo em Setembro a novembro de 2025. </li>
-                <li>Taxa de SLA de novembro (99,6%) mantém-se acima da média histórica, resultados de adoção de melhor relacionamento com o temporário, gratificações por assiduidade, facilidade nos pagamentos e principalmente grande redução nos erros de pagamento.</li>
+                <li>Melhoria consistente na taxa de diárias</li>
+                <li>Taxa de SLA de outubro (01 a 27/10/2025) com média de 99,6% superando nossa média histórica</li>
+                <li>Superação das diárias solicitadas demonstra comprometimento e sucessos nas ações para reduzir absenteísmo</li>
+            </ul>
         </div>
         <div style="flex:1;min-width:260px;background:#fff;border-radius:9px;padding:18px 18px 15px 18px;margin-bottom:8px;box-shadow:0 1px 5px #0001;">
             <div style="color:#FFA500;font-weight:700;margin-bottom:3px;">
@@ -507,8 +506,9 @@ if st.session_state.current_tab == "Histórico":
             </div>
             <ul style="font-size:1em;margin-left:6px;margin-bottom:0;">
                 <li>Controle mais rigoroso de STHs vencidas</li>
-                </ul>
+                            </ul>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
+
