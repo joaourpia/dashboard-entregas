@@ -89,12 +89,12 @@ st.markdown(f"""
 </div>
 <div class="dashboard-header">
   <div class="header-left">
-    <h1>Dashboard novembro 2025</h1>
+    <h1>Dashboard dezembro 2025</h1>
     <p>Relatório de Contratação de Temporários - Mendes RH</p>
   </div>
   <div class="header-right">
     <p class="periodo-label">Período</p>
-    <p class="periodo-value">novembro/2025</p>
+    <p class="periodo-value">dezembro/2025</p>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -139,7 +139,7 @@ if st.session_state.current_tab == "Visão Geral":
     col_pie, col_bar = st.columns(2, gap="medium")
     with col_pie:
         st.markdown('<div class="graph-container">', unsafe_allow_html=True)
-        st.markdown('<div class="graph-title">Desempenho SLA - novembro</div>', unsafe_allow_html=True)
+        st.markdown('<div class="graph-title">Desempenho SLA - dezembro</div>', unsafe_allow_html=True)
         st.markdown('<div class="graph-content">', unsafe_allow_html=True)
 
         no_prazo = sla["No_prazo"].iloc[0]
@@ -182,7 +182,7 @@ if st.session_state.current_tab == "Visão Geral":
 
     with col_bar:
         st.markdown('<div class="graph-container">', unsafe_allow_html=True)
-        st.markdown('<div class="graph-title">Diárias - novembro</div>', unsafe_allow_html=True)
+        st.markdown('<div class="graph-title">Diárias - dezembro</div>', unsafe_allow_html=True)
         st.markdown('<div class="graph-content">', unsafe_allow_html=True)
         solicitadas = pedidos.Solicitado.iloc[0]
         entregues = pedidos.Entregue.iloc[0]
@@ -218,7 +218,7 @@ if st.session_state.current_tab == "Visão Geral":
         st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar":False})
 
         st.markdown(
-            f"""<div class='goal-box'>✅ Superamos a meta! Entregamos {saldo} diárias a mais que o solicitado ({diaria_percent:.2f}%)</div>""",
+            f"""<div class='goal-box'>✅ Não superamos a meta! Entregamos {saldo} diárias a menos que o solicitado ({diaria_percent:.2f}%)</div>""",
             unsafe_allow_html=True
         )
         st.markdown('</div>', unsafe_allow_html=True)
@@ -226,9 +226,9 @@ if st.session_state.current_tab == "Visão Geral":
 
     st.markdown("""
     <div class="obs-box">
-    <b>Observações Importantes - novembro</b>
+    <b>Observações Importantes - dezembro</b>
     <ul>
-      <li><b>SLA:</b> SLA: Excelente performance da SLA de 99,6% em novembro/2025, e performance de diárias 18% acima do solicitado, mesmo em um periodo de alta demanda na cidade de Caldas. Adotamos a estratégia de pagamento por assiduidade e pagamentos facilitados, sendo feitos semanalmente.</li>
+      <li><b>SLA:</b> 87,4% em dezembro, com queda vs. o periodo de setembro a novembro (detalhes na aba SLA). Volume: diárias entregues 7,63% abaixo do solicitado (detalhes na aba Diárias).</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -297,7 +297,10 @@ elif st.session_state.current_tab == "Análise SLA":
     # Bloco azul - Contexto Evento VO
     st.markdown("""
     <div class="obs-box" style="background:#e8f1fd;border-left:5px solid #5aa7db;color:#164976;font-size:1.04em;margin-top:10px;font-weight:500;">
-    <b>Performance de 99,6% no mês de novembro/2025, onde tivemos 283 solicitações e entregamos 282.</b><br>
+    <b>Contexto SLA</b><br>
+    <li><b>Competitividade:</b> Valor da diária inferior à média praticada na região de Caldas, dificultando a atração.</li> <br>
+    <li><b>Baixa Conversão:</b> Absenteísmo de 70% nas entrevistas/treinamentos (convocação de 35/dia para 30% de presença). Baixa efetividade do SINE e indisponibilidade da base de temporários de Julho.</li> <br>
+    <li><b>Perfil:</b> Resistência do mercado local a contratos formais/efetivação em detrimento de modelos informais.</li> <br>
     </div>
     """, unsafe_allow_html=True)
 
@@ -360,8 +363,8 @@ elif st.session_state.current_tab == "Diárias":
     # Bloco verde sucesso
     st.markdown(f"""
     <div class="diarias-card-sucesso">
-      <b>Desempenho Excepcional</b><br>
-      Em novembro, superamos as expectativas ao entregar <b>{entregues} diárias</b>, quando foram solicitadas <b>{solicitadas}</b>, resultando em uma diferença positiva de <b style="color:#12bb26;">+{saldo} diárias</b>.<br>
+      <b>Desempenho abaixo</b><br>
+      No mês de dezembro, não superamos as expectativas ao entregar <b>{entregues} diárias</b>, quando foram solicitadas <b>{solicitadas}</b>, resultando em uma diferença negativa de <b style="color:#12bb26;">{saldo} diárias</b>.<br>
       Taxa de atendimento: <b>{taxa:.2f}%</b>.
     </div>
     """, unsafe_allow_html=True)
@@ -369,11 +372,9 @@ elif st.session_state.current_tab == "Diárias":
     # Bloco laranja motivos
     st.markdown("""
     <div class="diarias-motivos">
-      <div class="diarias-motivos-title">Motivos para Diárias Acima do Solicitado</div>
+      <div class="diarias-motivos-title">Motivos para Diárias Abaixo do Solicitado</div>
       <ol style="margin-top:0.1em;margin-bottom:0.1em;">
-        <li>Entregamos 195 diarias acima do solicitado, onde essa diferença doi composta de entregas acima nos feriados para evitar desfalcar os setores com as faltas e STHs vencidas que foram abertas depois do prazo.</li>
-        <li>Algumas STHs estavam vencidas, mas os temporários continuaram trabalhando.</li>
-        </ol>
+        <li>A partir da segunda metade de dezembro, tivemos diversos problemas, como: baixa procura de trabalho, desistências de contratações com menos de 5 dias em área e faltas ao trabalho, impactando diretamente na quantidade de diarias entregues.</li>
     </div>
     """, unsafe_allow_html=True)
 
@@ -389,7 +390,7 @@ if st.session_state.current_tab == "Histórico":
 
     st.markdown("""
 <div style="background:#fff;border-radius:16px;padding:28px 35px 26px 35px;margin-bottom:28px;box-shadow:0 1px 8px #0001;">
-    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Prazos de Entregas (Março - novembro)</div>
+    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Prazos de Entregas (Março - dezembro)</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -436,7 +437,7 @@ if st.session_state.current_tab == "Histórico":
 
     st.markdown("""
 <div style="background:#fff;border-radius:16px;padding:28px 35px 26px 35px;margin-bottom:28px;box-shadow:0 1px 8px #0001;">
-    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Diárias Entregues (Janeiro - novembro)</div>
+    <div style="font-weight:800;font-size:1.20em;margin-bottom:12px;">Histórico de Diárias Entregues (Janeiro - dezembro)</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -498,8 +499,7 @@ if st.session_state.current_tab == "Histórico":
                 <span style="font-size:1.08em;">&#8593; Pontos Positivos</span>
             </div>
             <ul style="font-size:1em;margin-left:6px;margin-bottom:0;">
-                <li>Performance consistentemente de diárias entregues acima de 100% do objetivo em Setembro a novembro de 2025. </li>
-                <li>Taxa de SLA de novembro (99,6%) mantém-se acima da média histórica, resultados de adoção de melhor relacionamento com o temporário, gratificações por assiduidade, facilidade nos pagamentos e principalmente grande redução nos erros de pagamento.</li>
+                <li>Entrega do reveillon acima de 100%</li>
         </div>
         <div style="flex:1;min-width:260px;background:#fff;border-radius:9px;padding:18px 18px 15px 18px;margin-bottom:8px;box-shadow:0 1px 5px #0001;">
             <div style="color:#FFA500;font-weight:700;margin-bottom:3px;">
@@ -507,8 +507,8 @@ if st.session_state.current_tab == "Histórico":
             </div>
             <ul style="font-size:1em;margin-left:6px;margin-bottom:0;">
                 <li>Controle mais rigoroso de STHs vencidas</li>
-                </ul>
-        </div>
+                <li>Há aumento de desistências e negativas. O principal ponto informado por candidatos é a não aceitação de registro em carteira (mesmo em contrato temporário). Também observamos desistências na etapa de efetivação. Motivos associados: diária de R$ 80,00 em eventos menores, distância, transporte e preocupação com benefícios governamentais.</li>
+                </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
